@@ -6,15 +6,24 @@
       font-family: Arial, sans-serif;
       margin: 10px;
     }
-    select {
+    select, button {
       width: 100%;
       padding: 5px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <label for="voiceSelect">Select Voice:</label>
   <select id="voiceSelect"></select>
+
+  <label for="modeSelect">Select Mode:</label>
+  <select id="modeSelect">
+    <option value="highlight">Highlight-and-Read Mode</option>
+    <option value="continuous">Continuous Reading Mode</option>
+  </select>
+
+  <button id="stopButton">Stop Reading</button>
   <script src="popup.js"></script>
 </body>
 </html>
