@@ -1,4 +1,4 @@
-# Text-to-Speech Extension for Firefox
+# Accessibility Extension for Firefox
 
 This is a simple Firefox extension that reads selected text aloud using text-to-speech (TTS) capabilities. Highlight text on any webpage, and the extension will begin reading it for you. You can also choose different voices for the speech output.
 
