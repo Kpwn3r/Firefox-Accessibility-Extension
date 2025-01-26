@@ -1,4 +1,4 @@
-# Accessibility Extension for Firefox
+# Highlight Text-to-speech Extension for Firefox
 
 This is a simple Firefox extension that reads selected text aloud using text-to-speech (TTS) capabilities. Highlight text on any webpage, and the extension will begin reading it for you. You can also choose different voices for the speech output.
 
@@ -6,6 +6,8 @@ This is a simple Firefox extension that reads selected text aloud using text-to-
 - Read highlighted text aloud on any webpage.
 - Supports multi-section reading across highlights.
 - Choose from a variety of available voices via the dropdown in the extension popup.
-- Stop reading by clicking anywhere on the page.
+- Stop reading by clicking anywhere on the page in highlight-to-read mode.
+- Continue reading after unhighlighting text with continous mode.
+- Stop button to stop all playback.
 
 https://github.com/Kpwn3r/Firefox-Accessibility-Extension
