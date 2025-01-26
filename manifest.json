@@ -2,7 +2,13 @@
   "manifest_version": 2,
   "name": "Text-to-Speech Extension",
   "version": "1.0",
+
   "description": "Read text aloud on any webpage by highlighting it.",
+
+  "icons": {
+    "48":"icon.png"
+  },
+  
   "permissions": ["storage"],
   "background": {
     "scripts": ["background.js"],
