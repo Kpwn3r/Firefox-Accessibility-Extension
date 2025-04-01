@@ -1,50 +1,31 @@
-let speechQueue = [];
-let isSpeaking = false;
-let selectedVoice = null;
+console.log("Background script loaded");
 
-// Load the selected voice from storage
-browser.storage.local.get("selectedVoice").then((result) => {
-  selectedVoice = result.selectedVoice || null;
-});
-
-// Watch for changes to the selected voice
-browser.storage.onChanged.addListener((changes) => {
-  if (changes.selectedVoice) {
-    selectedVoice = changes.selectedVoice.newValue;
+// Forward messages between popup and content scripts
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message.action === "readAll" && message.tabId) {
+    // Forward readAll to specific tab
+    return browser.tabs.sendMessage(message.tabId, message)
+      .catch(err => console.log("ReadAll error:", err));
+  }
+  
+  if (sender.tab) {
+    // Forward from content script to popup (if needed)
+    return Promise.resolve();
+  }
+  
+  // Forward from popup to all tabs
+  if (message.action === "stop") {
+    browser.tabs.query({}).then(tabs => {
+      tabs.forEach(tab => {
+        browser.tabs.sendMessage(tab.id, message)
+          .catch(err => console.log("Tab not ready:", tab.id, err));
+      });
+    });
   }
 });
 
-// Process the speech queue
-function processQueue() {
-  if (speechQueue.length > 0 && !isSpeaking) {
-    const text = speechQueue.shift();
-    const utterance = new SpeechSynthesisUtterance(text);
-
-    // Set the voice if one is selected
-    if (selectedVoice) {
-      const voice = speechSynthesis.getVoices().find((v) => v.name === selectedVoice);
-      if (voice) utterance.voice = voice;
-    }
-
-    isSpeaking = true;
-
-    utterance.onend = () => {
-      isSpeaking = false;
-      processQueue();
-    };
-
-    speechSynthesis.speak(utterance);
-  }
-}
-
-// Handle messages from content scripts
-browser.runtime.onMessage.addListener((message) => {
-  if (message.action === "speak") {
-    speechQueue.push(message.text);
-    processQueue();
-  } else if (message.action === "stop") {
-    speechSynthesis.cancel();
-    speechQueue = [];
-    isSpeaking = false;
-  }
+// Track active tab for potential future use
+let activeTabId = null;
+browser.tabs.onActivated.addListener((activeInfo) => {
+  activeTabId = activeInfo.tabId;
 });
